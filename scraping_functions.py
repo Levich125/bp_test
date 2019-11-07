@@ -15,6 +15,21 @@ class SportsBookScraper:
         self.all_columns = [x.text.strip() for x in books_carousel.find_all('li')]
         self.tables = soup.find_all("div", {"class": "dateGroup"})  # table tags
 
+    @staticmethod
+    def handle_date_and_time(df):
+        def get_time_and_date(row):
+            date_timestamp = row['date'].to_pydatetime()
+            time_timestamp = row['time'].to_pydatetime()
+            return date_timestamp.replace(hour=time_timestamp.hour).replace(minute=time_timestamp.minute)
+
+        df['date'] = pd.to_datetime(df['date'])
+        df['time'] = pd.to_datetime(df['time'])
+        datetime_series = df.apply(get_time_and_date, axis=1)
+        df.insert(loc=0, column='datetime', value=datetime_series)  # date column added
+        del df['date']
+        del df['time']
+        return df
+
     def construct_single_match_data(self, table_row_tag):
         """Construct 2-rows dataframe for single match, visible data only"""
         columns = self.all_columns[self.start_column_index: self.start_column_index + 10]
@@ -52,6 +67,7 @@ class SportsBookScraper:
 
         dat = table_tag.find('div', {'class': 'date'})
         df.insert(loc=0, column='date', value=dat.text)  # date column added
+        df = self.handle_date_and_time(df)
         return df
 
     def main(self):
