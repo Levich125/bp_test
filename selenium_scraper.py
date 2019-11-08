@@ -48,9 +48,9 @@ def collect_merged_tables(url):
 
 
 if __name__ == '__main__':
-    page_url = 'https://classic.sportsbookreview.com/betting-odds/nhl-hockey/?data=20170101'
+    # page_url = 'https://classic.sportsbookreview.com/betting-odds/nhl-hockey/'  # latest
+    page_url = 'https://classic.sportsbookreview.com/betting-odds/nhl-hockey/?date=20170101'
     tables = collect_merged_tables(page_url)
-    print(tables[1])
     shutil.rmtree('tables_saved/', ignore_errors=True)
     os.makedirs('tables_saved/')
     for table in tables:
