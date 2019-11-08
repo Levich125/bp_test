@@ -3,7 +3,8 @@ from time import sleep
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
-
+import shutil
+import os
 from scraping_functions import SportsBookScraper
 
 
@@ -50,3 +51,9 @@ if __name__ == '__main__':
     page_url = 'https://classic.sportsbookreview.com/betting-odds/nhl-hockey/?data=20170101'
     tables = collect_merged_tables(page_url)
     print(tables[1])
+    shutil.rmtree('tables_saved/', ignore_errors=True)
+    os.makedirs('tables_saved/')
+    for table in tables:
+        dat = table.iloc[0]['datetime'].date()
+        table.to_csv(f"tables_saved/{dat}.csv", index=False)
+    shutil.make_archive('tables_saved', 'zip', 'tables_saved/')
