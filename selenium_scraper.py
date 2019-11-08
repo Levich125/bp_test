@@ -5,7 +5,7 @@ from selenium import webdriver
 import pandas as pd
 import shutil
 import os
-from scraping_functions import SportsBookScraper
+from scraper import SportsBookScraper
 
 
 def collect_merged_tables(url):

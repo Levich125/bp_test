@@ -79,7 +79,7 @@ class SportsBookScraper:
 
 
 if __name__ == "__main__":
-    url = 'https://classic.sportsbookreview.com/betting-odds/nhl-hockey/?data=20170101'
+    url = 'https://classic.sportsbookreview.com/betting-odds/nhl-hockey/'
     result = get(url)
     soup_param = BeautifulSoup(result.text, features="html.parser")
     scraper = SportsBookScraper(soup_param, 0)
